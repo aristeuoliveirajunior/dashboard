@@ -11,12 +11,12 @@ import { PageTypes, Theme, ResponseStatus } from 'ui/Helpers/utils';
 import { faChartLine, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import { renderGraph, loadDashboard } from 'core/services/IA/dashboard';
 import { saveDashboardIAUsuario } from 'core/services/IA/dashboardIAUsuario';
-
-// Enum para tipos de dashboard
-export const TiposContextoEnum = {
-  Financeiro: 1,
-  Abastecimento: 2,
-};
+import {
+  TiposContextoEnum,
+  mapContextos,
+  renderChartResponsive,
+  loadGraph,
+} from './dashboardUtils';
 
 export default function Dashboard({ transaction }) {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -24,15 +24,6 @@ export default function Dashboard({ transaction }) {
   const [contexto2, setContexto2] = useState({});
   const [contexto3, setContexto3] = useState({});
   const [contexto4, setContexto4] = useState({});
-
-  const mapContextos = () => {
-    const result = Object.keys(TiposContextoEnum).map((key) => ({
-      id: TiposContextoEnum[key],
-      text: key,
-    }));
-
-    return result;
-  };
 
   const getValueContexto = (contexto) => TiposContextoEnum[contexto.text];
 
@@ -60,64 +51,6 @@ export default function Dashboard({ transaction }) {
   const [chart2Html, setChart2Html] = useState('');
   const [chart3Html, setChart3Html] = useState('');
   const [chart4Html, setChart4Html] = useState('');
-
-  const renderChartResponsive = (value) => {
-    // Adiciona CSS para fazer o gráfico se ajustar ao iframe
-    const responsiveHtml = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        body {
-          width: 50%;
-          height: 50%;
-          overflow: hidden;
-          font-family: Arial, sans-serif;
-        }
-        
-        .chart-container {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        canvas, svg {
-          max-width: 100%;
-          max-height: 100%;
-          width: auto;
-          height: auto;
-        }
-        
-        /* Para gráficos que usam divs */
-        .chart-div {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="chart-container">
-        ${value || '<p>Gráfico não disponível</p>'}
-      </div>
-    </body>
-    </html>
-  `;
-
-    return responsiveHtml;
-  };
 
   const renderChart = async (
     idGrafico,
@@ -178,33 +111,6 @@ export default function Dashboard({ transaction }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadGraph = async (
-    data,
-    idGrafico,
-    setChartHtml,
-    setContexto,
-    setLoading,
-    setChartDescription
-  ) => {
-    setLoading(true);
-
-    if (data.graficos) {
-      const grafico = data.graficos.find((g) => g.idGrafico === idGrafico);
-      if (grafico) {
-        setContexto({
-          id: grafico.idContexto,
-          text: Object.keys(TiposContextoEnum)[grafico.idContexto - 1],
-        });
-        setChartDescription(grafico.noPrompt);
-        if (grafico.noHtml) {
-          setChartHtml(renderChartResponsive(grafico.noHtml));
-        }
-      }
-    }
-
-    setLoading(false);
   };
 
   const load = async () => {
@@ -559,7 +465,7 @@ export default function Dashboard({ transaction }) {
                             setLoading4
                           )
                         }
-                        disabled={!chart4Description.trim() || loading4}
+                        disabled={!chart4Description?.trim() || loading4}
                       />
                     </div>
                     <div className='col'>
