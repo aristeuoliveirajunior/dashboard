@@ -301,9 +301,11 @@ namespace CSDModulos.BLL.IA
             return sqlStructure;
         }
 
-        private string GetFinalPrompt(string json, string inputGrafico)
+        public string GetFinalPrompt(string json, string inputGrafico)
         {
-            string pesquisa2 = $@"You are a language model specialized in generating charts using HTML and JavaScript. I will now provide you with a description of the chart I need. Your task is to generate only the HTML and JavaScript code required to create the chart, with no explanations or comments..
+            string pesquisa2 = $@"You are a language model specialized in generating charts using HTML and JavaScript. 
+            I will now provide you with a description of the chart I need. Your task is to generate only the HTML and JavaScript code required to create the chart, 
+            with no explanations or comments..
 
                 **Here is the chart description:**
             with this data {json} generate the HTML and JavaScript code for this specification {inputGrafico} **Only the HTML and JavaScript code **, with no explanations or any additional content.
@@ -328,19 +330,7 @@ namespace CSDModulos.BLL.IA
             return string.Empty;
         }
 
-        public  string RemoverConsultaDosDados(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-                return string.Empty;
-
-            // Regex para localizar e remover a parte "Consulta dos dados: { ... }"
-            string pattern = @"Consulta dos dados:\s*\{[^}]*\}\s*";
-            string resultado = Regex.Replace(input, pattern, "", RegexOptions.IgnoreCase);
-
-            return resultado.Trim(); // Remove espaços em branco extras
-        }
-
-
+       
 
         public async Task<string> RenderGraph(int idGrafico,string input, int idcontexto)
         {
