@@ -50,7 +50,7 @@ namespace CSDWebAPI30.Controllers.HELP
 
 
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        [AllowAnonymous]
+        
         [HttpPost("RenderGraph")]
         public async Task<IActionResult> RenderGraph([FromBody] ChatRequest input)
         {
