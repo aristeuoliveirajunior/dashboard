@@ -1,12 +1,10 @@
-﻿using Celebre.FrameWork.Pes;
-using Celebre.FrameWork.Tel;
+﻿
 using CSDFramework.Extensions;
-using CSDFramework.Util;
+
 using CSDModulos.BLL.IA;
 using CSDModulos.BLL.IA.Models;
 using CSDModulos.BLL.SEG;
-using CSDModulos.DAL.IA;
-using CSDModulos.DTO.IA;
+
 using CSDModulos.DTO.Util;
 using CSDWebAPI30.Util;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +12,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+
 using System.Threading;
 using System.Threading.Tasks;
 using static CSDModulos.BLL.IA.DashboardIABLL;
